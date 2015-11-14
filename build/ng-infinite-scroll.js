@@ -170,7 +170,13 @@ mod.directive('infiniteScroll', [
         scope.$watch('infiniteScrollContainer', handleInfiniteScrollContainer);
         handleInfiniteScrollContainer(scope.infiniteScrollContainer || []);
         if (attrs.infiniteScrollParent != null) {
-          changeContainer(angular.element(elem.parent()));
+          var parentLevels = parseInt(attrs.infiniteScrollParent);
+          if(isNaN(parentLevels) || parentLevels < 1){ parentLevels = 1; }
+          var parent = elem.parent();
+          for(var i=1; i < parentLevels; i++){
+            parent = parent.parent();
+          }
+          changeContainer(angular.element(parent));
         }
         if (attrs.infiniteScrollImmediateCheck != null) {
           immediateCheck = scope.$eval(attrs.infiniteScrollImmediateCheck);
